@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<video id="video_player"
+        width="100%"
+        autoplay controls autobuffer
+        src="http://localhost/live/livestream.m3u8"
+        type="application/vnd.apple.mpegurl">
+</video>
+
+</body>
+<script type="text/javascript" src="static/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/flv-1.5.0.min.js"></script>
+<script type="text/javascript" src="static/js/hls-0.14.17.min.js"></script>
+<script type="text/javascript" src="static/js/json2.js"></script>
+<script type="text/javascript" src="static/js/srs.page.js"></script>
+<script type="text/javascript" src="static/js/srs.log.js"></script>
+<script type="text/javascript" src="static/js/srs.utility.js"></script>
+<script type="text/javascript" src="static/js/winlin.utility.js"></script>
+<script type="text/javascript">
+    var stopPlayers = function () {
+        if (flvPlayer) {
+            flvPlayer.destroy();
+            flvPlayer = null;
+        }
+        if (hlsPlayer) {
+            hlsPlayer.destroy();
+            hlsPlayer = null;
+        }
+    };
+
+    var show_for_ok = function () {
+        $('#main_flash_alert').hide();
+        $('#main_info').show();
+        $('#main_tips').show();
+        $('#video_player').show();
+        //$('#btn_play').show();
+    };
+    var hlsPlayer = null;
+    show_for_ok();
+    console.log("loading m3u8...")
+
+    var url = "http://localhost/live/livestream.m3u8";
+    hlsPlayer = new Hls();
+    hlsPlayer.loadSource(url);
+    hlsPlayer.attachMedia(document.getElementById('video_player'));
+    console.log(url);
+    console.log("loaded m3u8...")
+</script>
+</html>
