@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<video id="video_player"
+        width="100%"
+        autoplay controls autobuffer
+        src="http://localhost:8080/live/livestream.flv"
+        type="application/vnd.apple.mpegurl">
+</video>
+
+</body>
+<script type="text/javascript" src="static/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/js/flv-1.5.0.min.js"></script>
+<script type="text/javascript" src="static/js/hls-0.14.17.min.js"></script>
+<script type="text/javascript" src="static/js/json2.js"></script>
+<script type="text/javascript" src="static/js/srs.page.js"></script>
+<script type="text/javascript" src="static/js/srs.log.js"></script>
+<script type="text/javascript" src="static/js/srs.utility.js"></script>
+<script type="text/javascript" src="static/js/winlin.utility.js"></script>
+<script type="text/javascript">
+    var flvPlayer = null;
+
+    var stopPlayers = function () {
+        if (flvPlayer) {
+            flvPlayer.destroy();
+            flvPlayer = null;
+        }
+    };
+
+    var hide_for_error = function () {
+        $('#main_flash_alert').show();
+        $('#main_info').hide();
+        $('#main_tips').hide();
+        $('#video_player').hide();
+        //$('#btn_play').hide();
+
+        stopPlayers();
+    };
+
+    var show_for_ok = function () {
+        $('#main_flash_alert').hide();
+        $('#main_info').show();
+        $('#main_tips').show();
+        $('#video_player').show();
+        //$('#btn_play').show();
+    };
+
+    var start_play = function (r) {
+        stopPlayers();
+        if (!r) return;
+
+        // Start play HTTP-FLV.
+        if (r.stream.indexOf('.flv') > 0) {
+            if (!flvjs.isSupported()) {
+                hide_for_error();
+                return;
+            }
+
+            show_for_ok();
+
+            flvPlayer = flvjs.createPlayer({type: 'flv', url: r.url});
+            flvPlayer.attachMediaElement(document.getElementById('video_player'));
+            flvPlayer.load();
+            flvPlayer.play();
+            return;
+        }
+
+        console.error('不支持的URL', r.url, r);
+        $('#video_player').hide();
+    };
+
+    var query = parse_query_string();
+
+    console.log("Auto Play");
+    query.autostart = "true";
+    if (query.autostart === "true") {
+        $('#video_player').prop('muted', true);
+
+        var r = parse_rtmp_url("http://localhost:8080/live/livestream.flv");
+        console.log(r);
+        r.stream = "http://localhost:8080/live/livestream.flv";
+        start_play(r);
+    } else {
+        $('#video_player').hide();
+    }
+</script>
+</html>

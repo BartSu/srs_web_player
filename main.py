@@ -5,5 +5,9 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route('/flv')
+def player():
+    return render_template("flv.html")
+
 if __name__ == '__main__':
     app.run('0.0.0.0')
