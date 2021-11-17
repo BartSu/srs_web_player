@@ -9,5 +9,9 @@ def index():
 def player():
     return render_template("flv.html")
 
+@app.route('/m3u8')
+def m3u8():
+    return render_template("m3u8.html")
+
 if __name__ == '__main__':
     app.run('0.0.0.0')

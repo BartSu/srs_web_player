@@ -8,7 +8,7 @@
 <video id="video_player"
         width="100%"
         autoplay controls autobuffer
-        src="http://localhost:8080/live/livestream.flv"
+        src="http://54.242.243.55:8080/live/livestream.flv"
         type="application/vnd.apple.mpegurl">
 </video>
 
@@ -81,9 +81,9 @@
     if (query.autostart === "true") {
         $('#video_player').prop('muted', true);
 
-        var r = parse_rtmp_url("http://localhost:8080/live/livestream.flv");
+        var r = parse_rtmp_url("http://54.242.243.55:8080/live/livestream.flv");
         console.log(r);
-        r.stream = "http://localhost:8080/live/livestream.flv";
+        r.stream = "http://54.242.243.55:8080/live/livestream.flv";
         start_play(r);
     } else {
         $('#video_player').hide();
